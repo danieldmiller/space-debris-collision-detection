@@ -17,3 +17,5 @@ public:
 private:
 	double x, y, z;
 };
+
+#endif // !SPACEPOINT_H
