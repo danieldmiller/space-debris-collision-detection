@@ -16,8 +16,11 @@ SpaceObject::~SpaceObject() {
 
 const SpaceObject& SpaceObject::operator=(const SpaceObject& sp)
 {
-	mass = sp.mass;
-	r = sp.r;
+    if (this != &sp) {
+        mass = sp.mass;
+        r = sp.r;
+    }
+    return *this;
 }
 
 double SpaceObject::getPi()
