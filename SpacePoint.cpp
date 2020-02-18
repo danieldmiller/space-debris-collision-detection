@@ -7,11 +7,15 @@ SpacePoint::SpacePoint(double x0, double y0, double z0)
 	z = z0;
 }
 
-SpacePoint::SpacePoint(const Space& rf) : x(rf.x), y(rf.y), z(rf.z)
+SpacePoint::SpacePoint(const SpacePoint& rf) : x(rf.x), y(rf.y), z(rf.z)
 {
 }
 
-const SpacePoint& SpacePoint::operator=(const Space& sp)
+SpacePoint::~SpacePoint()
+{
+}
+
+const SpacePoint& SpacePoint::operator=(const SpacePoint& sp)
 {
 	if (this != &sp) {
 		x = sp.x;
@@ -21,7 +25,7 @@ const SpacePoint& SpacePoint::operator=(const Space& sp)
 	return *this;
 }
 
-SpacePoint SpacePoint::operator+(const Space& delta) const
+SpacePoint SpacePoint::operator+(const SpacePoint& delta) const
 {
 	SpacePoint destination;
 	destination.x = x + delta.x;
@@ -36,4 +40,11 @@ SpacePoint SpacePoint::operator-(const SpacePoint& alpha) const
 	distance.x = x - alpha.x;
 	distance.y = y - alpha.y;
 	return distance;
+}
+
+
+ostream& operator<<(ostream& out, const SpacePoint& point)
+{
+	out << "(" << point.x << " , " << point.y << " , " << point.z << ")";
+	return out;
 }
