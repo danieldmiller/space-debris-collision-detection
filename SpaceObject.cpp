@@ -20,12 +20,26 @@ const SpaceObject& SpaceObject::operator=(const SpaceObject& sp)
 	r = sp.r;
 }
 
-int SpaceObject::getSpace()
+double SpaceObject::getPi()
 {
-	return 0;
+    int max = 1000;
+    double sum = 0.0;
+    int sign = 1;
+    for (int i = 0; i < max; ++i) {
+        sum += sign / (2.0 * i + 1.0);
+        sign *= -1;
+    }
+    return 4.0 * sum;
 }
 
-int SpaceObject::getArea() {
-
-	return 0;
+double SpaceObject::getSpace() const
+{
+    return (4/3*pi()*r^3);
 }
+
+double SpaceObject::getArea() const
+{
+    return (4*pi()*r^2);
+}
+
+
