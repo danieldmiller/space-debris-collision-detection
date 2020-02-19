@@ -30,6 +30,7 @@ SpacePoint SpacePoint::operator+(const SpacePoint& delta) const
 	SpacePoint destination;
 	destination.x = x + delta.x;
 	destination.y = y + delta.y;
+	destination.z = z + delta.z;
 
 	return destination;
 }
@@ -39,6 +40,7 @@ SpacePoint SpacePoint::operator-(const SpacePoint& alpha) const
 	SpacePoint distance;
 	distance.x = x - alpha.x;
 	distance.y = y - alpha.y;
+	distance.z = z - alpha.z;
 	return distance;
 }
 

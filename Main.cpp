@@ -10,9 +10,9 @@
 int main (/*int argc, char *argv[]*/) {
     SpacePoint ob1(1.2, 1.2, 1.2);
     SpacePoint ob2(2.3, 2.3, 2.3);
-    //SpacePoint ob3;
-    //ob3 = ob2 - ob1;
-    //cout << ob3;
-    return 0;
+    SpacePoint ob3;
+    ob3 = ob2 - ob1;
+    cout << ob3;
+    return EXIT_SUCCESS;
 
 }
