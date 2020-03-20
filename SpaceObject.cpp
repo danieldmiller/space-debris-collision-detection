@@ -4,9 +4,11 @@
 SpaceObject::SpaceObject(double mass0 = 0, double r0 = 0) {
 	mass = mass0;
 	r = r0;
+    g = 9.81;
+    bigG = 6.67408 * (10 ^ (-11));
 }
 
-SpaceObject::SpaceObject(const SpaceObject& rf) :  mass(rf.mass), r(rf.r){
+SpaceObject::SpaceObject(const SpaceObject& rf) :  mass(rf.mass), r(rf.r), g(rf.g), bigG(rf.bigG){
 
 }
 
