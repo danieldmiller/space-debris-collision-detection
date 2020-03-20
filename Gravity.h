@@ -10,8 +10,8 @@ public:
 	~Gravity();
 
 private:
-	const float g;
-	const float gravitationalC;
+	//const float g;
+	//const float gravitationalC;
 	
 };
 

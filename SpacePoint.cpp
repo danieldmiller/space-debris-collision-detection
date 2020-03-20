@@ -1,5 +1,6 @@
 #include "SpacePoint.h"
 
+
 SpacePoint::SpacePoint(double x0, double y0, double z0)
 {
 	x = x0;
