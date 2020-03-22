@@ -18,6 +18,9 @@ public:
 	//calculates the gravitational force of the object and saves the current value
 	void getGravitationalForceX(const SpaceObject& x);
 	void getGravitationalForceY(const SpaceObject& y);
+	void getGravitationalForceR();
+	void recordAngle();
+	void recordVelocity();
 	
 	//test functions to get values of objects
 	SpacePoint returnPoint();
@@ -35,7 +38,9 @@ private:
 	double mass, r, g, bigG; // mass of the planetary object r of the object, g=9,81 and bigG =6.6*10^-11
 	double* gX;	//records the gravitational force of the object in X direction
 	double* gY; //records the gravitational force of the object in Y direction
+	double* gR; //records the full gravitational force of the object
 	double* velocity; // records the velocity of the object
+	double* angle; // records the angle of the projectile
 	SpacePoint p;	// gets the location of the object
 };
 
