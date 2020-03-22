@@ -6,6 +6,7 @@ SpacePoint::SpacePoint(double x0, double y0, double z0)
 	x = x0;
 	y = y0;
 	z = z0;
+	
 }
 
 SpacePoint::SpacePoint(const SpacePoint& rf) : x(rf.x), y(rf.y), z(rf.z)
@@ -14,6 +15,12 @@ SpacePoint::SpacePoint(const SpacePoint& rf) : x(rf.x), y(rf.y), z(rf.z)
 
 SpacePoint::~SpacePoint()
 {
+}
+
+double SpacePoint::returnDistanceValue()
+{
+	double d = sqrt((x*x) + (y*y) + (z*z));
+	return d;
 }
 
 const SpacePoint& SpacePoint::operator=(const SpacePoint& sp)
