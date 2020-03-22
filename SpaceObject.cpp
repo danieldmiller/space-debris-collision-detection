@@ -1,5 +1,6 @@
 #include "SpacePoint.h"
 #include "SpaceObject.h"
+#include "math.h"
 #include <iostream>
 
 SpaceObject::SpaceObject(double mass0, double r0, double x0, double y0, double z0) : p(x0,y0,z0)  {
@@ -57,18 +58,28 @@ void SpaceObject::getGravitationalForceX(const SpaceObject& x)
     }*/
     SpacePoint dist;
     double tmpDist;
+    double cosin;
+
     dist = p - x.p;
     tmpDist = dist.returnDistanceValue();
+    cosin = p.returnPointMultiple(x.p) / (p.returnDistanceValue() * x.p.returnDistanceValue());
 
     double* fX;
     fX = new double;
+    cout << x.p << endl;
+    cout << tmpDist << endl;
+    cout << p.returnPointMultiple(x.p) << endl;
+    cout << p.returnDistanceValue() << endl;
+    cout << x.p.returnDistanceValue() << endl;
+    //cout << cosin << endl;
+   // cout << cos(cosin) << endl;
 
     if (gX != NULL) {
         *fX = *gX;
-        *fX = *fX + bigG * x.mass * mass / tmpDist;
+        *fX = *fX + (bigG * x.mass * mass / tmpDist * cos(cosin));
     }
     else {
-        *fX = bigG * x.mass * mass / tmpDist;
+        *fX = bigG * x.mass * mass / tmpDist * cos(cosin);
     }
     gX = new double;
 
@@ -78,20 +89,25 @@ void SpaceObject::getGravitationalForceX(const SpaceObject& x)
 
 void SpaceObject::getGravitationalForceY(const SpaceObject& y)
 {
-    double* fY;
-    fY = new double;
     SpacePoint dist;
     double tmpDist;
+    double sine;
+
     dist = p - y.p;
     tmpDist = dist.returnDistanceValue();
+    sine = p.returnPointMultiple(y.p) / (p.returnDistanceValue() * y.p.returnDistanceValue());
+
+    double* fY;
+    fY = new double;
+
     //cout << tmpDist << endl;
 
     if (*gY != NULL) {
         *fY = *gY;
-        *fY = *fY + bigG * y.mass * mass / tmpDist;
+        *fY = *fY + (bigG * y.mass * mass / tmpDist *sin(sine));
     }
     else {
-        *fY = bigG * y.mass * mass / tmpDist;
+        *fY = bigG * y.mass * mass / tmpDist * sin(sine);
     }
 
     gY = new double;

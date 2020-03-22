@@ -17,10 +17,31 @@ SpacePoint::~SpacePoint()
 {
 }
 
-double SpacePoint::returnDistanceValue()
+double SpacePoint::returnDistanceValue() const
 {
 	double d = sqrt((x*x) + (y*y) + (z*z));
 	return d;
+}
+
+double SpacePoint::returnPointMultiple(const SpacePoint& mul) const
+{
+	double mult = x * mul.x + y * mul.y + z * mul.z;
+	return mult;
+}
+
+double SpacePoint::getX() const
+{
+	return x;
+}
+
+double SpacePoint::getY() const
+{
+	return y;
+}
+
+double SpacePoint::getZ() const
+{
+	return z;
 }
 
 const SpacePoint& SpacePoint::operator=(const SpacePoint& sp)
