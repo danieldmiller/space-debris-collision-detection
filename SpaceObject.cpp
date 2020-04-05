@@ -1,4 +1,4 @@
-#include "SpacePoint.h"
+
 #include "SpaceObject.h"
 #include "math.h"
 #include <iostream>
@@ -10,29 +10,41 @@ SpaceObject::SpaceObject(double mass0, double r0, double x0, double y0, double z
     bigG = 0.0000000000667408;
     gY = new double;
     gX = new double;
+    gR = new double;
     velocity = new double;
+    angle = new double;
     *gY = NULL;
     *gX = NULL;
+    *gR = NULL;
     *velocity = NULL;
+    *angle = NULL;
 }
 
 SpaceObject::SpaceObject(const SpaceObject& rf) :  mass(rf.mass), r(rf.r), g(rf.g), bigG(rf.bigG), p(rf.p){
     gY = new double;
     gX = new double;
+    gR = new double;
     velocity = new double;
+    angle = new double;
     *gY = *rf.gY;
     *gX = *rf.gX;
+    *gR = *rf.gR;
     *velocity = *rf.velocity;
+    *angle = *rf.angle;
 
 }
 
 SpaceObject::~SpaceObject() {
     delete gY;
     delete gX;
+    delete gR;
     delete velocity;
+    delete angle;
     gY = NULL;
     gX = NULL;
+    gR = NULL;
     velocity = NULL;
+    angle = NULL;
 }
 
 const SpaceObject& SpaceObject::operator=(const SpaceObject& sp)
@@ -40,10 +52,14 @@ const SpaceObject& SpaceObject::operator=(const SpaceObject& sp)
     if (this != &sp) {
         gY = new double;
         gX = new double;
+        gR = new double;
         velocity = new double;
+        angle = new double;
         *gY = *sp.gY;
         *gX = *sp.gX;
+        *gR = *sp.gR;
         *velocity = *sp.velocity;
+        *angle = *sp.angle;
         p = sp.p;
     }
     return *this;
@@ -76,10 +92,10 @@ void SpaceObject::getGravitationalForceX(const SpaceObject& x)
 
     if (gX != NULL) {
         *fX = *gX;
-        *fX = *fX + (bigG * x.mass * mass / tmpDist * cos(cosin));
+        *fX = *fX + (bigG * x.mass * mass / tmpDist * acos(cosin));
     }
     else {
-        *fX = bigG * x.mass * mass / tmpDist * cos(cosin);
+        *fX = bigG * x.mass * mass / tmpDist * acos(cosin);
     }
     gX = new double;
 
@@ -104,10 +120,10 @@ void SpaceObject::getGravitationalForceY(const SpaceObject& y)
 
     if (*gY != NULL) {
         *fY = *gY;
-        *fY = *fY + (bigG * y.mass * mass / tmpDist *sin(sine));
+        *fY = *fY + (bigG * y.mass * mass / tmpDist * asin(sine));
     }
     else {
-        *fY = bigG * y.mass * mass / tmpDist * sin(sine);
+        *fY = bigG * y.mass * mass / tmpDist * asin(sine);
     }
 
     gY = new double;
@@ -117,10 +133,28 @@ void SpaceObject::getGravitationalForceY(const SpaceObject& y)
     
 }
 
-SpacePoint SpaceObject::returnPoint()
+void SpaceObject::recordAngle()
+{
+    angle = new double;
+    *angle = atan(*gY / *gX);
+}
+
+void SpaceObject::recordVelocity()
+{
+    velocity = new double;
+    *velocity = *gR / mass /* (* time)*/;
+}
+
+void SpaceObject::getGravitationalForceR()
+{
+    gR = new double;
+    *gR = sqrt((*gX * *gX) + (*gY * *gY));
+}
+
+/*SpacePoint SpaceObject::returnPoint()
 {
     return p;
-}
+}*/
 
 double SpaceObject::getMass() const
 {
