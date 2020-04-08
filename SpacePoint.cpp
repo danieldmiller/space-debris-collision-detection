@@ -1,12 +1,11 @@
 #include "SpacePoint.h"
-
+#include <cmath>
 
 SpacePoint::SpacePoint(double x0, double y0, double z0)
 {
 	x = x0;
 	y = y0;
 	z = z0;
-	
 }
 
 SpacePoint::SpacePoint(const SpacePoint& rf) : x(rf.x), y(rf.y), z(rf.z)

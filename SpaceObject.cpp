@@ -1,66 +1,56 @@
-
 #include "SpaceObject.h"
-#include "math.h"
+#include <cmath>
 #include <iostream>
 
-SpaceObject::SpaceObject(double mass0, double r0, double x0, double y0, double z0) : p(x0,y0,z0)  {
+SpaceObject::SpaceObject(double mass0, double r0, double x0, double y0, double z0) : location(x0,y0,z0)  {
 	mass = mass0;
 	r = r0;
     g = 9.81;
     bigG = 0.0000000000667408;
-    gY = new double;
-    gX = new double;
-    gR = new double;
-    velocity = new double;
-    angle = new double;
-    *gY = NULL;
-    *gX = NULL;
-    *gR = NULL;
-    *velocity = NULL;
-    *angle = NULL;
+    gY = 0.0;
+    gX = 0.0;
+    gR = 0.0;
+    velocity = 0.0;
+    gY = 0.0;
+    gX = 0.0;
+    gR = 0.0;
+    velocity = 0.0;
+    horizontalAngle = 0.0;
+    verticalAngle = 0.0;
 }
 
-SpaceObject::SpaceObject(const SpaceObject& rf) :  mass(rf.mass), r(rf.r), g(rf.g), bigG(rf.bigG), p(rf.p){
-    gY = new double;
-    gX = new double;
-    gR = new double;
-    velocity = new double;
-    angle = new double;
-    *gY = *rf.gY;
-    *gX = *rf.gX;
-    *gR = *rf.gR;
-    *velocity = *rf.velocity;
-    *angle = *rf.angle;
-
+SpaceObject::SpaceObject(const SpaceObject& rf) :  mass(rf.mass), r(rf.r), g(rf.g), bigG(rf.bigG), location(rf.location){
+    gY = 0.0;
+    gX = 0.0;
+    gR = 0.0;
+    velocity = 0.0;
+    gY = rf.gY;
+    gX = rf.gX;
+    gR = rf.gR;
+    velocity = rf.velocity;
+    horizontalAngle = rf.horizontalAngle;
+    verticalAngle = rf.verticalAngle;
 }
 
 SpaceObject::~SpaceObject() {
-    delete gY;
-    delete gX;
-    delete gR;
-    delete velocity;
-    delete angle;
-    gY = NULL;
-    gX = NULL;
-    gR = NULL;
-    velocity = NULL;
-    angle = NULL;
 }
 
 const SpaceObject& SpaceObject::operator=(const SpaceObject& sp)
 {
     if (this != &sp) {
-        gY = new double;
-        gX = new double;
-        gR = new double;
-        velocity = new double;
-        angle = new double;
-        *gY = *sp.gY;
-        *gX = *sp.gX;
-        *gR = *sp.gR;
-        *velocity = *sp.velocity;
-        *angle = *sp.angle;
-        p = sp.p;
+        gY = 0.0;
+        gX = 0.0;
+        gR = 0.0;
+        velocity = 0.0;
+        horizontalAngle = 0.0;
+        verticalAngle = 0.0;
+        gY = sp.gY;
+        gX = sp.gX;
+        gR = sp.gR;
+        velocity = sp.velocity;
+        horizontalAngle = 0.0;
+        verticalAngle = 0.0;
+        location = sp.location;
     }
     return *this;
 }
@@ -76,31 +66,23 @@ void SpaceObject::getGravitationalForceX(const SpaceObject& x)
     double tmpDist;
     double cosin;
 
-    dist = p - x.p;
+    dist = location - x.location;
     tmpDist = dist.returnDistanceValue();
-    cosin = p.returnPointMultiple(x.p) / (p.returnDistanceValue() * x.p.returnDistanceValue());
+    cosin = location.returnPointMultiple(x.location) / (location.returnDistanceValue() * x.location.returnDistanceValue());
 
-    double* fX;
-    fX = new double;
-    cout << x.p << endl;
+    double fX = 0.0;
+    cout << x.location << endl;
     cout << tmpDist << endl;
-    cout << p.returnPointMultiple(x.p) << endl;
-    cout << p.returnDistanceValue() << endl;
-    cout << x.p.returnDistanceValue() << endl;
+    cout << location.returnPointMultiple(x.location) << endl;
+    cout << location.returnDistanceValue() << endl;
+    cout << x.location.returnDistanceValue() << endl;
     //cout << cosin << endl;
-   // cout << cos(cosin) << endl;
+    //cout << cos(cosin) << endl;
 
-    if (gX != NULL) {
-        *fX = *gX;
-        *fX = *fX + (bigG * x.mass * mass / tmpDist * acos(cosin));
-    }
-    else {
-        *fX = bigG * x.mass * mass / tmpDist * acos(cosin);
-    }
-    gX = new double;
-
-    *gX = *fX;
-    delete fX;
+    fX = gX;
+    fX = fX + (bigG * x.mass * mass / tmpDist * acos(cosin));
+    gX = 0.0;
+    gX = fX;
 }
 
 void SpaceObject::getGravitationalForceY(const SpaceObject& y)
@@ -109,46 +91,54 @@ void SpaceObject::getGravitationalForceY(const SpaceObject& y)
     double tmpDist;
     double sine;
 
-    dist = p - y.p;
+    dist = location - y.location;
     tmpDist = dist.returnDistanceValue();
-    sine = p.returnPointMultiple(y.p) / (p.returnDistanceValue() * y.p.returnDistanceValue());
+    sine = location.returnPointMultiple(y.location) / (location.returnDistanceValue() * y.location.returnDistanceValue());
 
-    double* fY;
-    fY = new double;
+    double fY;
 
     //cout << tmpDist << endl;
 
-    if (*gY != NULL) {
-        *fY = *gY;
-        *fY = *fY + (bigG * y.mass * mass / tmpDist * asin(sine));
-    }
-    else {
-        *fY = bigG * y.mass * mass / tmpDist * asin(sine);
-    }
-
-    gY = new double;
-
-    *gY = *fY;
-    delete fY;
-    
+    fY = gY;
+    fY = fY + (bigG * y.mass * mass / tmpDist * asin(sine));
+    gY = 0.0;
+    gY = fY;    
 }
 
-void SpaceObject::recordAngle()
+void SpaceObject::getGravitationalForceZ(const SpaceObject& z)
 {
-    angle = new double;
-    *angle = atan(*gY / *gX);
+    SpacePoint dist;
+    double tmpDist;
+    double sine;
+
+    dist = location - z.location;
+    tmpDist = dist.returnDistanceValue();
+    sine = location.returnPointMultiple(z.location) / (location.returnDistanceValue() * z.location.returnDistanceValue());
+
+    double fZ;
+
+    fZ = gZ;
+    fZ = fZ + (bigG * z.mass * mass / tmpDist * asin(sine));
+    gZ = 0.0;
+    gZ = fZ;
+}
+
+void SpaceObject::recordDirection()
+{
+    horizontalAngle = atan(gY / gX); 
+    verticalAngle = atan(gZ / gX);   
 }
 
 void SpaceObject::recordVelocity()
 {
-    velocity = new double;
-    *velocity = *gR / mass /* (* time)*/;
+    velocity = 0.0;
+    velocity = gR / mass /* (* time)*/;
 }
 
 void SpaceObject::getGravitationalForceR()
 {
-    gR = new double;
-    *gR = sqrt((*gX * *gX) + (*gY * *gY));
+    gR = 0.0;
+    gR = sqrt((gX * gX) + (gY * gY));
 }
 
 /*SpacePoint SpaceObject::returnPoint()
@@ -168,7 +158,7 @@ double SpaceObject::getR() const
 
 double SpaceObject::getGX() const
 {
-    return *gX;
+    return gX;
 }
 
 double SpaceObject::getPi()
@@ -195,6 +185,6 @@ double SpaceObject::getArea() const
 
 ostream& operator<<(ostream& out, const SpaceObject& obj)
 {
-    out << obj.p << " " << obj.bigG << " " << obj.g << " " << obj.mass << " " << obj.r << " ";
+    out << obj.location << " " << obj.bigG << " " << obj.g << " " << obj.mass << " " << obj.r << " ";
     return out;
 }

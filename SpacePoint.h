@@ -2,8 +2,8 @@
 #ifndef SPACEPOINT_H
 #define SPACEPOINT_H
 
-using namespace std;
 #include <iostream>
+using namespace std;
 
 class SpacePoint {
 	friend ostream &operator<<(ostream& out, const SpacePoint &point);

@@ -9,6 +9,7 @@ public:
 	Space(const Space& rf);
 	~Space();
 	void initializeObjects();
+    void updateObjects();
 
 private:
 	SpaceObject *debris;
