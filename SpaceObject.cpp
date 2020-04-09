@@ -2,6 +2,8 @@
 #include <cmath>
 #include <iostream>
 
+double SpaceObject::time = 0.0;
+
 SpaceObject::SpaceObject(double mass0, double r0, double x0, double y0, double z0) : location(x0,y0,z0)  {
 	mass = mass0;
 	r = r0;
@@ -9,25 +11,26 @@ SpaceObject::SpaceObject(double mass0, double r0, double x0, double y0, double z
     bigG = 0.0000000000667408;
     gY = 0.0;
     gX = 0.0;
+    gZ = 0.0;
     gR = 0.0;
     velocity = 0.0;
-    gY = 0.0;
-    gX = 0.0;
-    gR = 0.0;
-    velocity = 0.0;
+    acceleration = 0.0;
     horizontalAngle = 0.0;
     verticalAngle = 0.0;
 }
 
 SpaceObject::SpaceObject(const SpaceObject& rf) :  mass(rf.mass), r(rf.r), g(rf.g), bigG(rf.bigG), location(rf.location){
-    gY = 0.0;
+    /*gY = 0.0;
     gX = 0.0;
+    gZ = 0.0;
     gR = 0.0;
-    velocity = 0.0;
+    velocity = 0.0;*/
+    gZ = rf.gZ;
     gY = rf.gY;
     gX = rf.gX;
     gR = rf.gR;
     velocity = rf.velocity;
+    acceleration = rf.acceleration;
     horizontalAngle = rf.horizontalAngle;
     verticalAngle = rf.verticalAngle;
 }
@@ -48,8 +51,8 @@ const SpaceObject& SpaceObject::operator=(const SpaceObject& sp)
         gX = sp.gX;
         gR = sp.gR;
         velocity = sp.velocity;
-        horizontalAngle = 0.0;
-        verticalAngle = 0.0;
+        horizontalAngle = sp.horizontalAngle;
+        verticalAngle = sp.verticalAngle;
         location = sp.location;
     }
     return *this;
@@ -132,7 +135,24 @@ void SpaceObject::recordDirection()
 void SpaceObject::recordVelocity()
 {
     velocity = 0.0;
-    velocity = gR / mass /* (* time)*/;
+    velocity = gR / mass * time;
+}
+
+void SpaceObject::recordAcceleration()
+{
+    acceleration = 0.0;
+    acceleration = gR / mass;
+}
+
+void SpaceObject::recordNewLocation(const SpacePoint& d)
+{
+    SpacePoint velocityVector(sin(horizontalAngle) * velocity, cos(horizontalAngle) * velocity, d.getZ()/* temporal */); // still need the z-value
+    location = velocityVector + d;
+}
+
+SpacePoint SpaceObject::returnPoint() const
+{
+    return location;
 }
 
 void SpaceObject::getGravitationalForceR()
@@ -159,6 +179,12 @@ double SpaceObject::getR() const
 double SpaceObject::getGX() const
 {
     return gX;
+}
+
+double SpaceObject::addTime()
+{
+    time = time + 0.000001;
+    return time;
 }
 
 double SpaceObject::getPi()

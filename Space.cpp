@@ -44,6 +44,7 @@ void Space::initializeObjects()
 
 void Space::updateObjects()
 {
+    
     for (int i = 0; i < amountOfDebris; i++) {
         for(int j = i + 1; j < amountOfDebris; j++) {
             SpaceObject obj_i = *(debris + i);
@@ -51,6 +52,7 @@ void Space::updateObjects()
             obj_i.getGravitationalForceX(obj_j);
             obj_i.getGravitationalForceY(obj_j);
             obj_i.getGravitationalForceZ(obj_j);
+            *(debris + i) = obj_i;
         }
    }
 
@@ -59,5 +61,10 @@ void Space::updateObjects()
         obj.getGravitationalForceR();
         obj.recordDirection();
         obj.recordVelocity();
+        *(debris + i) = obj;
+    }
+
+    for (int i = 0; i < amountOfDebris; i++) {
+        (debris + i)->recordNewLocation((debris + i)->returnPoint());
     }
 }

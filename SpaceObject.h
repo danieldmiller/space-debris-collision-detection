@@ -21,12 +21,15 @@ class SpaceObject{
         void getGravitationalForceR();
         void recordDirection();
         void recordVelocity();
-        
+        void recordAcceleration();
+        void recordNewLocation(const SpacePoint& d);
+        SpacePoint returnPoint() const;
+
         //test functions to get values of objects
-        //SpacePoint returnPoint();
         double getMass() const;
         double getR() const;
         double getGX() const;
+        static double addTime(); //time calculated in nanoseconds
 
         static double getPi(); // calculate pi
         double getSpace() const; // get the size of the object 4/3*pi*r^3
@@ -39,9 +42,11 @@ class SpaceObject{
         double gZ; //records the gravitational force of the object in Z direction
         double gR; //records the full gravitational force of the object
         double velocity; // records the velocity of the object
+        double acceleration;
         SpacePoint location; // gets the location of the object
-        double horizontalAngle; // angle projection on x-y plane forms
-        double verticalAngle;   // angle projection on z-x plane forms
+        double horizontalAngle; // angle projection on x-y plane forms theta
+        double verticalAngle;   // angle projection on z-x plane forms phi
+        static double time;
 };
 
 #endif // !SPACEOBJECT_H
