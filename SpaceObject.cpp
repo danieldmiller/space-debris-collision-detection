@@ -132,17 +132,6 @@ void SpaceObject::recordDirection()
     verticalAngle = atan(gZ / gX);   
 }
 
-void SpaceObject::recordVelocity()
-{
-    velocity = 0.0;
-    velocity = gR / mass * time;
-}
-
-void SpaceObject::recordAcceleration()
-{
-    acceleration = 0.0;
-    acceleration = gR / mass;
-}
 
 void SpaceObject::recordNewLocation(const SpacePoint& d)
 {
@@ -155,10 +144,27 @@ SpacePoint SpaceObject::returnPoint() const
     return location;
 }
 
-void SpaceObject::getGravitationalForceR()
+bool SpaceObject::colliciondetection(const SpaceObject& check)
 {
+    SpacePoint comp = check.returnPoint();
+    //(ax-bx)2+(ay-by)2+(az-bz)2 < (ar+br)2
+    if ((pow(location.getX() - comp.getX(), 2) + pow(location.getY() - comp.getY(), 2 ) + pow(location.getZ() - comp.getZ(), 2)) <= (pow((r + check.getR()), 2)) ) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void SpaceObject::getAllGravitationalForces(double time0/* add const from space class that records time*/)
+{
+    //records the total amount of gravitational force on the object
     gR = 0.0;
     gR = sqrt((gX * gX) + (gY * gY));
+
+    //records velocity
+    velocity = 0.0;
+    velocity = gR / mass * time0;
 }
 
 /*SpacePoint SpaceObject::returnPoint()
@@ -179,12 +185,6 @@ double SpaceObject::getR() const
 double SpaceObject::getGX() const
 {
     return gX;
-}
-
-double SpaceObject::addTime()
-{
-    time = time + 0.000001;
-    return time;
 }
 
 double SpaceObject::getPi()

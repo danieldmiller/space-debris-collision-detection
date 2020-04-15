@@ -2,6 +2,8 @@
 #include "SpaceObject.h"
 #include <random>
 
+double SpaceObject::time = 0.0;
+
 Space::Space(int amountOfDebris0)
 {
 	amountOfDebris = amountOfDebris0;
@@ -58,13 +60,16 @@ void Space::updateObjects()
 
     for (int i = 0; i < amountOfDebris; i++) {
         SpaceObject obj = *(debris + i);
-        obj.getGravitationalForceR();
+        obj.getAllGravitationalForces(time);
         obj.recordDirection();
-        obj.recordVelocity();
         *(debris + i) = obj;
     }
 
     for (int i = 0; i < amountOfDebris; i++) {
         (debris + i)->recordNewLocation((debris + i)->returnPoint());
     }
+
+    time = time + 0.000001; // add time in nanoseconds
 }
+
+

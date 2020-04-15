@@ -15,6 +15,7 @@ private:
 	SpaceObject *debris;
 	SpacePoint limit[7];
 	int amountOfDebris;
+	static double time;
 };
 
 #endif /* !SPACE_H*/

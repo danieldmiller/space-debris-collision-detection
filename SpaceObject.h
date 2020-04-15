@@ -18,18 +18,18 @@ class SpaceObject{
         void getGravitationalForceX(const SpaceObject& x);
         void getGravitationalForceY(const SpaceObject& y);
         void getGravitationalForceZ(const SpaceObject& y);
-        void getGravitationalForceR();
+        void getAllGravitationalForces(double time0);
         void recordDirection();
-        void recordVelocity();
-        void recordAcceleration();
         void recordNewLocation(const SpacePoint& d);
         SpacePoint returnPoint() const;
+
+        //(ax-bx)2+(ay-by)2+(az-bz)2 < (ar+br)2         if true objects collide
+        bool colliciondetection(const SpaceObject& check);
 
         //test functions to get values of objects
         double getMass() const;
         double getR() const;
         double getGX() const;
-        static double addTime(); //time calculated in nanoseconds
 
         static double getPi(); // calculate pi
         double getSpace() const; // get the size of the object 4/3*pi*r^3
@@ -42,7 +42,6 @@ class SpaceObject{
         double gZ; //records the gravitational force of the object in Z direction
         double gR; //records the full gravitational force of the object
         double velocity; // records the velocity of the object
-        double acceleration;
         SpacePoint location; // gets the location of the object
         double horizontalAngle; // angle projection on x-y plane forms theta
         double verticalAngle;   // angle projection on z-x plane forms phi
