@@ -139,6 +139,20 @@ double SpaceObject::getArea() const
     return (4*getPi()*r*r);
 }
 
+std::string SpaceObject::jsonNumber(double value) {
+    return isnan(value) || isinf(value) ? "undefined" : std::to_string(value);
+}
+
+const ostream& SpaceObject::toJson(ostream& out) const
+{
+    return out << "{"
+        << "\"r\":" << jsonNumber(r) << ","
+        << "\"x\":" << jsonNumber(location.getX()) << ","
+        << "\"y\":" << jsonNumber(location.getY()) << ","
+        << "\"z\":" << jsonNumber(location.getZ())
+    << "}";
+}
+
 ostream& operator<<(ostream& out, const SpaceObject& obj)
 {
     out << obj.location << " " << obj.bigG << " " << obj.g << " " << obj.mass << " " << obj.r << " ";

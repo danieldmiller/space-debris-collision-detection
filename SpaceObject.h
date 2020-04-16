@@ -32,6 +32,9 @@ class SpaceObject{
         double getSpace() const; // get the size of the object 4/3*pi*r^3
         double getArea() const; // get the area 4*pi*r^2
 
+        static std::string jsonNumber(double value); // convert a double into a json number
+        const ostream& toJson(ostream& out) const; // output the object as json
+
     private:
         double mass, r, g, bigG; // mass of the planetary object r of the object, g=9,81 and bigG =6.6*10^-11
         // SpacePoint gForce; //records the gravitational force of the object in XYZ direction
