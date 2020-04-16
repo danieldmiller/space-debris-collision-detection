@@ -20,7 +20,7 @@ class SpaceObject{
         void getGravitationalForceZ(const SpaceObject& y);
         void getAllGravitationalForces(double time0);
         void recordDirection();
-        void recordNewLocation(const SpacePoint& d);
+        void updateLocation();
         SpacePoint returnPoint() const;
 
         //(ax-bx)2+(ay-by)2+(az-bz)2 < (ar+br)2         if true objects collide

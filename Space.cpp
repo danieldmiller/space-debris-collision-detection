@@ -65,7 +65,7 @@ void Space::updateObjects()
     }
 
     for (int i = 0; i < amountOfDebris; i++) {
-        debris[i].recordNewLocation(debris[i].returnPoint());
+        debris[i].updateLocation();
     }
 
     time = time + 0.000001; // add time in nanoseconds

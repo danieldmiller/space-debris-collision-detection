@@ -56,70 +56,41 @@ const SpaceObject& SpaceObject::operator=(const SpaceObject& sp)
 
 void SpaceObject::getGravitationalForceX(const SpaceObject& x)
 {
-   /* if (*gX != NULL) {
-        double* fX0;
-        fX0 = new double;
-        fX0 = gX;
-    }*/
-    SpacePoint dist;
-    double tmpDist;
+    double dist;
     double cosin;
 
-    dist = location - x.location;
-    tmpDist = dist.returnDistanceValue();
+    dist = (location - x.location).returnDistanceValue();
     cosin = location.returnPointMultiple(x.location) / (location.returnDistanceValue() * x.location.returnDistanceValue());
 
-    double fX = 0.0;
     cout << x.location << endl;
-    cout << tmpDist << endl;
+    cout << dist << endl;
     cout << location.returnPointMultiple(x.location) << endl;
     cout << location.returnDistanceValue() << endl;
     cout << x.location.returnDistanceValue() << endl;
-    //cout << cosin << endl;
-    //cout << cos(cosin) << endl;
 
-    fX = gX;
-    fX = fX + (bigG * x.mass * mass / tmpDist * acos(cosin));
-    gX = 0.0;
-    gX = fX;
+    gX = gX + (bigG * x.mass * mass / dist * acos(cosin));
 }
 
 void SpaceObject::getGravitationalForceY(const SpaceObject& y)
 {
-    SpacePoint dist;
-    double tmpDist;
+    double dist;
     double sine;
 
-    dist = location - y.location;
-    tmpDist = dist.returnDistanceValue();
+    dist = (location - y.location).returnDistanceValue();
     sine = location.returnPointMultiple(y.location) / (location.returnDistanceValue() * y.location.returnDistanceValue());
 
-    double fY;
-
-    //cout << tmpDist << endl;
-
-    fY = gY;
-    fY = fY + (bigG * y.mass * mass / tmpDist * asin(sine));
-    gY = 0.0;
-    gY = fY;
+    gY = gY + (bigG * y.mass * mass / dist * asin(sine));
 }
 
 void SpaceObject::getGravitationalForceZ(const SpaceObject& z)
 {
-    SpacePoint dist;
-    double tmpDist;
+    double dist;
     double sine;
 
-    dist = location - z.location;
-    tmpDist = dist.returnDistanceValue();
+    dist = (location - z.location).returnDistanceValue();
     sine = location.returnPointMultiple(z.location) / (location.returnDistanceValue() * z.location.returnDistanceValue());
 
-    double fZ;
-
-    fZ = gZ;
-    fZ = fZ + (bigG * z.mass * mass / tmpDist * asin(sine));
-    gZ = 0.0;
-    gZ = fZ;
+    gZ = gZ + (bigG * z.mass * mass / dist * asin(sine));
 }
 
 void SpaceObject::recordDirection()
@@ -129,8 +100,9 @@ void SpaceObject::recordDirection()
 }
 
 
-void SpaceObject::recordNewLocation(const SpacePoint& d)
+void SpaceObject::updateLocation()
 {
+    SpacePoint d = location;
     SpacePoint velocityVector(sin(horizontalAngle) * velocity, cos(horizontalAngle) * velocity, d.getZ()/* temporal */); // still need the z-value
     location = velocityVector + d;
 }
