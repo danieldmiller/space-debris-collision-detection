@@ -1,27 +1,58 @@
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
+const clock = new THREE.Clock();
 const spaceHistory = window.spaceHistory;
+
+const cameraSettings = {
+	distance: 100,
+	speed: 0.2
+};
+
+const keys = {};
+document.addEventListener('keydown', e => {
+	keys[e.key] = true;
+});
+document.addEventListener('keyup', e => {
+	keys[e.key] = false;
+});
 
 const init = () => {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 
 	const light = new THREE.PointLight(0xffffff, 1);
-	light.position.set(50, 50, 50);
+	light.position.set(500, 500, 500);
 	scene.add(light);
-	const ambientLight = new THREE.AmbientLight(0x101010);
+	const ambientLight = new THREE.AmbientLight(0x202020);
 	scene.add(ambientLight);
+	clock.start();
+	const axesHelper = new THREE.AxesHelper(3);
+	scene.add(axesHelper);
 
-	camera.position.z = 50;
 	camera.position.y = 25;
-	camera.position.x = 25;
-	camera.lookAt(0, 0, 0);
+
 };
 
+let cameraPosition = 0;
 const animate = () => {
 	requestAnimationFrame(animate);
 	renderer.render(scene, camera);
+	const delta = clock.getDelta();
+
+	if (keys.ArrowUp)
+		cameraSettings.distance -= delta * 50;
+	if (keys.ArrowDown)
+		cameraSettings.distance += delta * 50;
+	if (keys.ArrowLeft)
+		cameraSettings.speed -= delta * 2;
+	if (keys.ArrowRight)
+		cameraSettings.speed += delta * 2;
+
+	cameraPosition += delta * cameraSettings.speed;
+	camera.position.x = Math.sin(cameraPosition) * cameraSettings.distance;
+	camera.position.z = Math.cos(cameraPosition) * cameraSettings.distance;
+	camera.lookAt(0, 0, 0);
 };
 
 const objects = [];
