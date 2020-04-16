@@ -3,10 +3,9 @@
 #define SPACEPOINT_H
 
 #include <iostream>
-using namespace std;
 
 class SpacePoint {
-	friend ostream &operator<<(ostream& out, const SpacePoint &point);
+	friend std::ostream &operator<<(std::ostream& out, const SpacePoint &point);
 public:
 	SpacePoint(double x0 = 0, double y0 = 0, double z0 = 0);
 	SpacePoint(const SpacePoint& rf);

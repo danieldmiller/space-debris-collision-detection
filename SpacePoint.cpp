@@ -81,7 +81,7 @@ SpacePoint SpacePoint::operator-(const SpacePoint& alpha) const
 }
 
 
-ostream& operator<<(ostream& out, const SpacePoint& point)
+std::ostream& operator<<(std::ostream& out, const SpacePoint& point)
 {
 	out << "(" << point.x << " , " << point.y << " , " << point.z << ")";
 	return out;

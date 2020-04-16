@@ -67,7 +67,7 @@ void SpaceObject::updateLocation()
     SpacePoint d = location;
     double factor = velocity / gR;
 
-    SpacePoint velocityVector(gX * factor, gY * factor, gZ * factor); // still need the z-value
+    SpacePoint velocityVector(gX * factor, gY * factor, gZ * factor);
     location = velocityVector + d;
 }
 
@@ -143,17 +143,17 @@ std::string SpaceObject::jsonNumber(double value) {
     return isnan(value) || isinf(value) ? "undefined" : std::to_string(value);
 }
 
-const ostream& SpaceObject::toJson(ostream& out) const
+const std::ostream& SpaceObject::toJson(std::ostream& out) const
 {
     return out << "{"
         << "\"r\":" << jsonNumber(r) << ","
         << "\"x\":" << jsonNumber(location.getX()) << ","
         << "\"y\":" << jsonNumber(location.getY()) << ","
         << "\"z\":" << jsonNumber(location.getZ())
-    << "}";
+        << "}";
 }
 
-ostream& operator<<(ostream& out, const SpaceObject& obj)
+std::ostream& operator<<(std::ostream& out, const SpaceObject& obj)
 {
     out << obj.location << " " << obj.bigG << " " << obj.g << " " << obj.mass << " " << obj.r << " ";
     return out;

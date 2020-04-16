@@ -2,11 +2,13 @@
 #ifndef SPACEOBJECT_H
 #define SPACEOBJECT_H
 
+
+#include <cmath>
 #include <iostream>
 #include "SpacePoint.h"
 
 class SpaceObject{
-	friend ostream& operator<<(ostream& out, const SpaceObject& obj); // cout overloading operator
+	friend std::ostream& operator<<(std::ostream& out, const SpaceObject& obj); // cout overloading operator
     public:
         SpaceObject(double mass0 = 0.0, double r0 = 0.0, double x0 = 0.0, double y0 = 0.0, double z0 = 0.0); // constructor
         SpaceObject(const SpaceObject& rf); // copy constructor
@@ -33,7 +35,7 @@ class SpaceObject{
         double getArea() const; // get the area 4*pi*r^2
 
         static std::string jsonNumber(double value); // convert a double into a json number
-        const ostream& toJson(ostream& out) const; // output the object as json
+        const std::ostream& toJson(std::ostream& out) const; // output the object as json
 
     private:
         double mass, r, g, bigG; // mass of the planetary object r of the object, g=9,81 and bigG =6.6*10^-11
