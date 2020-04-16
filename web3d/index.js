@@ -1,6 +1,7 @@
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
+const spaceHistory = window.spaceHistory;
 
 const init = () => {
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -25,7 +26,8 @@ const animate = () => {
 
 const objects = [];
 const addObject = id => {
-	const geometry = new THREE.SphereGeometry(1, 32, 32);
+	const { r } = spaceHistory[0].objects[id];
+	const geometry = new THREE.SphereGeometry(r, 32, 32);
 	const material = new THREE.MeshLambertMaterial();
 	const mesh = new THREE.Mesh(geometry, material);
 	const object = { mesh, id };
@@ -36,7 +38,7 @@ const addObject = id => {
 };
 
 const updateObject = (object, step) => {
-	const data = window.spaceHistory[step].objects[object.id];
+	const data = spaceHistory[step].objects[object.id];
 	const { x = 0, y = 0, z = 0 } = data;
 
 	object.mesh.position.set(x, y, z);
@@ -44,16 +46,15 @@ const updateObject = (object, step) => {
 
 init();
 
-if (window.spaceHistory) {
-	window.spaceHistory[0].objects.forEach((data, i) => addObject(i));
+if (spaceHistory) {
+	spaceHistory[0].objects.forEach((data, i) => addObject(i));
 
 	let currentStep = 0;
+	const timeInfo = document.getElementById("time");
 	setInterval(() => {
-		currentStep = (currentStep + 1) % window.spaceHistory.length;
+		currentStep = (currentStep + 1) % spaceHistory.length;
+		timeInfo.innerText = `${currentStep + 1} / ${spaceHistory.length}`;
 		objects.forEach(object => updateObject(object, currentStep));
-
-		const objectPosition = objects[0].mesh.position;
-		camera.lookAt(objectPosition);
 	}, 1000 / 30);
 } else {
 	alert('No history found');

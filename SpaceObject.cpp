@@ -146,6 +146,7 @@ std::string SpaceObject::jsonNumber(double value) {
 const ostream& SpaceObject::toJson(ostream& out) const
 {
     return out << "{"
+        << "\"r\":" << jsonNumber(r) << ","
         << "\"x\":" << jsonNumber(location.getX()) << ","
         << "\"y\":" << jsonNumber(location.getY()) << ","
         << "\"z\":" << jsonNumber(location.getZ())
