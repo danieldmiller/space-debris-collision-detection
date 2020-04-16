@@ -15,12 +15,9 @@ class SpaceObject{
         const SpaceObject& operator=(const SpaceObject& sp); //overloading operator for redefining objects
 
         //calculates the gravitational force of the object and saves the current value
-        void getGravitationalForceX(const SpaceObject& x);
-        void getGravitationalForceY(const SpaceObject& y);
-        void getGravitationalForceZ(const SpaceObject& y);
-        void getAllGravitationalForces(double time0);
-        void recordDirection();
-        void recordNewLocation(const SpacePoint& d);
+        void updateGravitationalForce(const SpaceObject& object);
+        void updateVelocity(double deltaTime);
+        void updateLocation();
         SpacePoint returnPoint() const;
 
         //(ax-bx)2+(ay-by)2+(az-bz)2 < (ar+br)2         if true objects collide
@@ -34,18 +31,16 @@ class SpaceObject{
         static double getPi(); // calculate pi
         double getSpace() const; // get the size of the object 4/3*pi*r^3
         double getArea() const; // get the area 4*pi*r^2
-	
+
     private:
         double mass, r, g, bigG; // mass of the planetary object r of the object, g=9,81 and bigG =6.6*10^-11
+        // SpacePoint gForce; //records the gravitational force of the object in XYZ direction
         double gX;	//records the gravitational force of the object in X direction
         double gY; //records the gravitational force of the object in Y direction
         double gZ; //records the gravitational force of the object in Z direction
         double gR; //records the full gravitational force of the object
         double velocity; // records the velocity of the object
         SpacePoint location; // gets the location of the object
-        double horizontalAngle; // angle projection on x-y plane forms theta
-        double verticalAngle;   // angle projection on z-x plane forms phi
-        static double time;
 };
 
 #endif // !SPACEOBJECT_H

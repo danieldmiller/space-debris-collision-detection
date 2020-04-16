@@ -3,6 +3,8 @@
 #define SPACE_H
 
 #include "SpaceObject.h"
+#include <vector>
+
 class Space {
 public:
 	Space(int amountOfDebris0 = 0);
@@ -12,7 +14,7 @@ public:
     void updateObjects();
 
 private:
-	SpaceObject *debris;
+	std::vector<SpaceObject> debris;
 	SpacePoint limit[7];
 	int amountOfDebris;
 	static double time;

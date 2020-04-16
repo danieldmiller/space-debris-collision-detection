@@ -12,9 +12,10 @@
 #endif // _DEBUG
 
 int main (/*int argc, char *argv[]*/) {
-    Space space;
+    Space space(20);
     space.initializeObjects();
-    space.updateObjects();
+    for(int i = 0; i < 5000; i++)
+    	space.updateObjects();
     cout << "Done updating objects" << endl;
     return EXIT_SUCCESS;
 };
