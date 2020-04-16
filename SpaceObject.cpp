@@ -67,7 +67,7 @@ void SpaceObject::updateLocation()
     SpacePoint d = location;
     double factor = velocity / gR;
 
-    SpacePoint velocityVector(gX * factor, gY * factor, 0/* temporal */); // still need the z-value
+    SpacePoint velocityVector(gX * factor, gY * factor, gZ * factor); // still need the z-value
     location = velocityVector + d;
 }
 
