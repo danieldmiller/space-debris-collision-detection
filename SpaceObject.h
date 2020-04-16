@@ -34,7 +34,7 @@ class SpaceObject{
         static double getPi(); // calculate pi
         double getSpace() const; // get the size of the object 4/3*pi*r^3
         double getArea() const; // get the area 4*pi*r^2
-	
+
     private:
         double mass, r, g, bigG; // mass of the planetary object r of the object, g=9,81 and bigG =6.6*10^-11
         double gX;	//records the gravitational force of the object in X direction
@@ -45,7 +45,6 @@ class SpaceObject{
         SpacePoint location; // gets the location of the object
         double horizontalAngle; // angle projection on x-y plane forms theta
         double verticalAngle;   // angle projection on z-x plane forms phi
-        static double time;
 };
 
 #endif // !SPACEOBJECT_H

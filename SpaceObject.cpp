@@ -2,8 +2,6 @@
 #include <cmath>
 #include <iostream>
 
-double SpaceObject::time = 0.0;
-
 SpaceObject::SpaceObject(double mass0, double r0, double x0, double y0, double z0) : location(x0,y0,z0)  {
 	mass = mass0;
 	r = r0;
@@ -14,7 +12,6 @@ SpaceObject::SpaceObject(double mass0, double r0, double x0, double y0, double z
     gZ = 0.0;
     gR = 0.0;
     velocity = 0.0;
-    acceleration = 0.0;
     horizontalAngle = 0.0;
     verticalAngle = 0.0;
 }
@@ -30,7 +27,6 @@ SpaceObject::SpaceObject(const SpaceObject& rf) :  mass(rf.mass), r(rf.r), g(rf.
     gX = rf.gX;
     gR = rf.gR;
     velocity = rf.velocity;
-    acceleration = rf.acceleration;
     horizontalAngle = rf.horizontalAngle;
     verticalAngle = rf.verticalAngle;
 }
@@ -105,7 +101,7 @@ void SpaceObject::getGravitationalForceY(const SpaceObject& y)
     fY = gY;
     fY = fY + (bigG * y.mass * mass / tmpDist * asin(sine));
     gY = 0.0;
-    gY = fY;    
+    gY = fY;
 }
 
 void SpaceObject::getGravitationalForceZ(const SpaceObject& z)
@@ -128,8 +124,8 @@ void SpaceObject::getGravitationalForceZ(const SpaceObject& z)
 
 void SpaceObject::recordDirection()
 {
-    horizontalAngle = atan(gY / gX); 
-    verticalAngle = atan(gZ / gX);   
+    horizontalAngle = atan(gY / gX);
+    verticalAngle = atan(gZ / gX);
 }
 
 

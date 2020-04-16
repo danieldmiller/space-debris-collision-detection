@@ -2,7 +2,7 @@
 #include "SpaceObject.h"
 #include <random>
 
-double SpaceObject::time = 0.0;
+double Space::time = 0.0;
 
 Space::Space(int amountOfDebris0)
 {
@@ -46,7 +46,7 @@ void Space::initializeObjects()
 
 void Space::updateObjects()
 {
-    
+
     for (int i = 0; i < amountOfDebris; i++) {
         for(int j = i + 1; j < amountOfDebris; j++) {
             SpaceObject obj_i = *(debris + i);
