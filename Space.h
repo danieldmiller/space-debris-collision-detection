@@ -2,8 +2,9 @@
 #ifndef SPACE_H
 #define SPACE_H
 
-#include "SpaceObject.h"
 #include <vector>
+#include "SpaceObject.h"
+#include "SpaceWriter.h"
 
 class Space {
 public:
@@ -16,6 +17,7 @@ public:
 private:
 	std::vector<SpaceObject> debris;
 	SpacePoint limit[7];
+	SpaceWriter *output;
 	int amountOfDebris;
 	static double time;
 };

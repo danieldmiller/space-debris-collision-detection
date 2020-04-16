@@ -13,4 +13,5 @@ add_executable(space-debris-collision-detection
 	Space.cpp
 	SpaceObject.cpp
 	SpacePoint.cpp
+	SpaceWriter.cpp
 )

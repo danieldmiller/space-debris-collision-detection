@@ -7,7 +7,7 @@ double Space::time = 0.0;
 Space::Space(int amountOfDebris0)
 {
 	amountOfDebris = amountOfDebris0;
-	// debris = new SpaceObject[amountOfDebris];
+    output = new SpaceWriter("web3d/space-history.js");
 
 	//initialize the limits for the space
 	//for(int i = 0; i < 8 ; i++){
@@ -18,10 +18,12 @@ Space::Space(int amountOfDebris0)
 Space::Space(const Space& rf) {
 	amountOfDebris = rf.amountOfDebris;
 	debris = rf.debris;
+	output = rf.output;
 }
 
 Space::~Space()
 {
+    delete output;
 }
 
 void Space::initializeObjects()
@@ -40,6 +42,7 @@ void Space::initializeObjects()
         double z = uniformPosition(re) * 10 * amountOfDebris;
         debris.emplace_back(mass, radius, x, y, z);
     }
+    output->writeObjects(debris, amountOfDebris, time);
 }
 
 void Space::updateObjects()
@@ -63,4 +66,5 @@ void Space::updateObjects()
     }
 
     time = time + deltaTime;
+    output->writeObjects(debris, amountOfDebris, time);
 }
