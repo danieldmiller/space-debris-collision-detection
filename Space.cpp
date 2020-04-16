@@ -47,7 +47,10 @@ void Space::updateObjects()
 
     for (int i = 0; i < amountOfDebris; i++) {
         SpaceObject &obj_i = debris[i];
-        for(int j = i + 1; j < amountOfDebris; j++) {
+        for(int j = 0; j < amountOfDebris; j++) {
+            if (i == j)
+                continue;
+
             SpaceObject &obj_j = debris[j];
             obj_i.getGravitationalForceX(obj_j);
             obj_i.getGravitationalForceY(obj_j);
