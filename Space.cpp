@@ -29,21 +29,22 @@ void Space::initializeObjects()
     double lower_bound = 2;
     double upper_bound = 5;
     std::uniform_real_distribution<double> uniform(lower_bound,upper_bound);
+    std::uniform_real_distribution<double> uniformPosition(-1, 1);
     std::default_random_engine re;
-    double a_random_double = uniform(re);
 
     for (int i = 0; i < amountOfDebris; i++) {
-        double mass = uniform(re);
+        double mass = uniform(re) * 100000;
         double radius = uniform(re);
-        double x = uniform(re);
-        double y = uniform(re);
-        double z = uniform(re);
+        double x = uniformPosition(re) * 10 * amountOfDebris;
+        double y = uniformPosition(re) * 10 * amountOfDebris;
+        double z = uniformPosition(re) * 10 * amountOfDebris;
         debris.emplace_back(mass, radius, x, y, z);
     }
 }
 
 void Space::updateObjects()
 {
+    double deltaTime = 100000;
 
     for (int i = 0; i < amountOfDebris; i++) {
         SpaceObject &obj_i = debris[i];
@@ -51,24 +52,15 @@ void Space::updateObjects()
             if (i == j)
                 continue;
 
-            SpaceObject &obj_j = debris[j];
-            obj_i.getGravitationalForceX(obj_j);
-            obj_i.getGravitationalForceY(obj_j);
-            obj_i.getGravitationalForceZ(obj_j);
+            obj_i.updateGravitationalForce(debris[j]);
         }
    }
 
     for (int i = 0; i < amountOfDebris; i++) {
         SpaceObject &obj = debris[i];
-        obj.getAllGravitationalForces(time);
-        obj.recordDirection();
+        obj.updateVelocity(deltaTime);
+        obj.updateLocation();
     }
 
-    for (int i = 0; i < amountOfDebris; i++) {
-        debris[i].updateLocation();
-    }
-
-    time = time + 0.000001; // add time in nanoseconds
+    time = time + deltaTime;
 }
-
-

@@ -18,7 +18,7 @@ SpacePoint::~SpacePoint()
 
 double SpacePoint::returnDistanceValue() const
 {
-	double d = sqrt((x*x) + (y*y) + (z*z));
+	double d = sqrt(sqrt((x*x) + (y*y)) + (z*z));
 	return d;
 }
 
@@ -41,6 +41,14 @@ double SpacePoint::getY() const
 double SpacePoint::getZ() const
 {
 	return z;
+}
+
+void SpacePoint::normalize() {
+	double dist = returnDistanceValue();
+
+	x /= dist;
+	y /= dist;
+	z /= dist;
 }
 
 const SpacePoint& SpacePoint::operator=(const SpacePoint& sp)
