@@ -27,7 +27,6 @@ Space::~Space()
     delete output;
 }
 
-
 void Space::initializeObjects()
 {
     double lower_bound = 2;
@@ -48,8 +47,8 @@ void Space::initializeObjects()
     }
 
     singleP.endClock();
-    std::cout << "single initialization" << singleP << std::endl;
-    //output->writeObjects(debris, amountOfDebris, time);
+    std::cout << "single initialization time: " << singleP.returnSingleTime() << "ns" << std::endl;
+    output->writeObjects(debris, amountOfDebris, time);
 }
 
 void Space::initializeObjectsThreads()
@@ -66,6 +65,7 @@ void Space::initializeObjectsThreads()
             this->initializeObjectsForThreads(threadBegin, threadEnd);
             }));
     }
+
     for (auto& thread : threads) {
         thread.join();
     }
@@ -73,7 +73,9 @@ void Space::initializeObjectsThreads()
     threads.clear();
 
     multiP.endClock();
-    std::cout << "parallel initialization" << multiP << std::endl;
+
+    //calculates the average that a single thread takes to run
+    std::cout << "parallel initialization time: " << multiP.returnParallelTime() << "ns" << std::endl;
 }
 
 
@@ -103,10 +105,10 @@ void Space::updateObjects()
     }
 
     singleP.endClock();
-    std::cout << "single update" << singleP << std::endl;
+    std::cout << "single update time" << singleP.returnSingleTime() << "ns" << std::endl;
 
     time = time + deltaTime;
-    //output->writeObjects(debris, amountOfDebris, time);
+    output->writeObjects(debris, amountOfDebris, time);
 }
 
 void Space::updateObjectsThreads()
@@ -133,7 +135,9 @@ void Space::updateObjectsThreads()
     }
     threads.clear();
     multiP.endClock();
-    std::cout << "parallel update" << multiP << std::endl;
+
+    //calculates the average that a single thread takes to run
+    std::cout << "parallel update time: " << multiP.returnParallelTime() << "ns" << std::endl;
 
     time = time + deltaTime;
 }
@@ -155,7 +159,8 @@ void Space::initializeObjectsForThreads(int begin, int end)
         double z = uniformPosition(re) * 10 * amountOfDebris;
         debris.emplace_back(mass, radius, x, y, z);
     }
-    // m.unlock();
+    //std::cout << std::thread::get_id() << std::endl;
+   // m.unlock();
 }
 
 void Space::updateForceForThreads(int begin, int end)
@@ -179,6 +184,5 @@ void Space::updateForceForThreads(int begin, int end)
     }
     m.unlock();
 }
-
 
 
