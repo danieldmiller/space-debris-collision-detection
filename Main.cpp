@@ -16,6 +16,6 @@ int main (/*int argc, char *argv[]*/) {
     space.initializeObjects();
     for(int i = 0; i < 5000; i++)
     	space.updateObjects();
-    cout << "Done updating objects" << endl;
+    std::cout << "Done updating objects" << std::endl;
     return EXIT_SUCCESS;
 };

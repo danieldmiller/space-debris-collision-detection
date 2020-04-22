@@ -15,7 +15,7 @@ public:
 	void writeObjects(std::vector<SpaceObject> const &debris, int amountOfDebris, double time);
 
 private:
-    ofstream outputFile;
+    std::ofstream outputFile;
     bool hasWrittenAlready = false;
 };
 

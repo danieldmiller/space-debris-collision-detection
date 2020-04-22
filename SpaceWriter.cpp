@@ -2,7 +2,7 @@
 #include "SpaceWriter.h"
 
 SpaceWriter::SpaceWriter(std::string filename) {
-	outputFile.open(filename, ios::out | ios::trunc);
+	outputFile.open(filename, std::ios_base::out | std::ios_base::trunc);
 	outputFile << "window.spaceHistory = [";
 }
 
@@ -12,7 +12,7 @@ SpaceWriter::~SpaceWriter() {
 }
 
 void SpaceWriter::writeObjects(std::vector<SpaceObject> const &debris, int amountOfDebris, double time) {
-	if (hasWrittenAlready)
+    if (hasWrittenAlready)
 		outputFile << ",";
 	else
 		hasWrittenAlready = true;
