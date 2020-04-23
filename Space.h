@@ -12,7 +12,7 @@
 
 class Space {
 public:
-	Space(int amountOfDebris0 = 0);
+	Space(int amountOfDebris0 = 0, bool printObjects = false);
 	Space(const Space& rf);
 	~Space();
 	void initializeObjects();

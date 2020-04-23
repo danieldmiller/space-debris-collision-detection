@@ -1,29 +1,21 @@
 #include <cmath>
 #include "SpaceWriter.h"
 
-SpaceWriter::SpaceWriter(std::string filename) {
-	outputFile.open(filename, std::ios_base::out | std::ios_base::trunc);
-	outputFile << "window.spaceHistory = [";
-}
-
-SpaceWriter::~SpaceWriter() {
-	outputFile << "]";
-	outputFile.close();
+SpaceWriter::SpaceWriter(bool _printObjects) {
+	printObjects = _printObjects;
 }
 
 void SpaceWriter::writeObjects(std::vector<SpaceObject> const &debris, int amountOfDebris, double time) {
-    if (hasWrittenAlready)
-		outputFile << ",";
-	else
-		hasWrittenAlready = true;
+	if (!printObjects)
+		return;
 
-	outputFile << "{time:" << time << ",objects:[";
+	std::cout << "{\"time\":" << time << ",\"objects\":[";
 	for (int i = 0; i < amountOfDebris; i++) {
 		SpaceObject const &obj = debris[i];
-		obj.toJson(outputFile);
+		obj.toJson(std::cout);
 
 		if (i != amountOfDebris - 1)
-			outputFile << ",";
+			std::cout << ",";
 	}
-	outputFile << "]}";
+	std::cout << "]}" << std::endl;
 }

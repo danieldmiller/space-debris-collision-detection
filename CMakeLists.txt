@@ -7,6 +7,10 @@ project(space-debris-collision-detection)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Pthreads
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 # compiles the files defined by SOURCES to generante the executable defined by EXEC
 add_executable(space-debris-collision-detection
 	Main.cpp
@@ -16,3 +20,5 @@ add_executable(space-debris-collision-detection
 	SpaceWriter.cpp
 	Clock.cpp
 )
+
+target_link_libraries(space-debris-collision-detection Threads::Threads)

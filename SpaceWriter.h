@@ -9,14 +9,12 @@
 
 class SpaceWriter {
 public:
-	SpaceWriter(std::string filename);
-	~SpaceWriter();
+	SpaceWriter(bool printObjects);
 
 	void writeObjects(std::vector<SpaceObject> const &debris, int amountOfDebris, double time);
 
 private:
-    std::ofstream outputFile;
-    bool hasWrittenAlready = false;
+    bool printObjects;
 };
 
 #endif /* !SPACE_WRITER_H*/

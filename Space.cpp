@@ -3,12 +3,12 @@
 #include <random>
 
 double Space::time = 0.0;
+double deltaTime = 3600 * 24; // 1 day
 
-Space::Space(int amountOfDebris0)
+Space::Space(int amountOfDebris0, bool printObjects)
 {
 	amountOfDebris = amountOfDebris0;
-    output = new SpaceWriter("web3d/space-history.js");
-	// debris = new SpaceObject[amountOfDebris];
+    output = new SpaceWriter(printObjects);
 
 	//initialize the limits for the space
 	//for(int i = 0; i < 8 ; i++){
@@ -29,20 +29,20 @@ Space::~Space()
 
 void Space::initializeObjects()
 {
-    double lower_bound = 2;
-    double upper_bound = 5;
-    std::uniform_real_distribution<double> uniform(lower_bound, upper_bound);
-    std::uniform_real_distribution<double> uniformPosition(-1, 1);
-    std::default_random_engine re;
+    std::uniform_real_distribution<double> uniformMass(3, 5);
+    std::uniform_real_distribution<double> uniformRadius(2, 5);
+    std::uniform_real_distribution<double> uniformPosition(-500, 500);
+    std::random_device rd;
+    std::default_random_engine re(rd());
 
     singleP.startClock();
 
     for (int i = 0; i < amountOfDebris; i++) {
-        double mass = uniform(re) * 100000;
-        double radius = uniform(re);
-        double x = uniformPosition(re) * 10 * amountOfDebris;
-        double y = uniformPosition(re) * 10 * amountOfDebris;
-        double z = uniformPosition(re) * 10 * amountOfDebris;
+        double mass = pow(10, uniformMass(re));
+        double radius = uniformRadius(re);
+        double x = uniformPosition(re);
+        double y = uniformPosition(re);
+        double z = uniformPosition(re);
         debris.emplace_back(mass, radius, x, y, z);
     }
 
@@ -81,11 +81,6 @@ void Space::initializeObjectsThreads()
 
 void Space::updateObjects()
 {
-
-
-    double deltaTime = 100000;
-
-
     singleP.startClock();
 
     for (int i = 0; i < amountOfDebris; i++) {
@@ -113,9 +108,6 @@ void Space::updateObjects()
 
 void Space::updateObjectsThreads()
 {
-
-    double deltaTime = 100000;
-
     int threadBegin = 0;
     int threadEnd = 0;
 

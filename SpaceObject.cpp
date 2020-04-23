@@ -2,6 +2,8 @@
 #include <cmath>
 #include <iostream>
 
+using namespace std;
+
 SpaceObject::SpaceObject(double mass0, double r0, double x0, double y0, double z0) : location(x0,y0,z0)  {
 	mass = mass0;
 	r = r0;
