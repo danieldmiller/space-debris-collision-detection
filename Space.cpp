@@ -100,7 +100,7 @@ void Space::updateObjects()
     }
 
     singleP.endClock();
-    std::cout << "single update time" << singleP.returnSingleTime() << "ns" << std::endl;
+    std::cout << "single update time: " << singleP.returnSingleTime() << "ns" << std::endl;
 
     time = time + deltaTime;
     output->writeObjects(debris, amountOfDebris, time);
