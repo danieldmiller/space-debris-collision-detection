@@ -3,3 +3,8 @@
 .vscode/
 build
 web3d/node_modules
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+space-debris-collision-detection
