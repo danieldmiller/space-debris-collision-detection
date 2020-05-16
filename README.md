@@ -1,6 +1,14 @@
 # space-debris-collision-detection
 High performance parallel algorithm for detecting debris collision
 
+## Running the program
+
+To get started running the program, please follow these steps:
+
+- Run `cmake .` to generate a Makefile in the current directory
+- Run `make` to build the program using the generated makefile as input
+- Finally, run `./space-debris-collision-detection [optional-flags]`
+
 ## Flags
 
 To show the help, run `./space-debris-collision-detection --help`. There is several flags that will allow you to customize the simulation and the way it's run.
