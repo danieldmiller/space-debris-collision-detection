@@ -96,7 +96,11 @@ void Space::updateObjects()
                 continue;
             if (obj_i.detectCollision(obj_j)) {
                 collisionOutput->writeCollision(obj_i, obj_j, time, true);
-                // TODO: Remove collided objects
+
+                // Remove collided objects
+                debris.erase(debris.begin() + i);
+                debris.erase(debris.begin() + j);
+                amountOfDebris -= 2;
                 continue;
             }
 
