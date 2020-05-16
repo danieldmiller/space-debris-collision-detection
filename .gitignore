@@ -8,3 +8,4 @@ CMakeFiles/
 Makefile
 cmake_install.cmake
 space-debris-collision-detection
+collisions.json

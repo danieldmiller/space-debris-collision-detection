@@ -23,7 +23,7 @@ class SpaceObject{
         SpacePoint returnPoint() const;
 
         //(ax-bx)2+(ay-by)2+(az-bz)2 < (ar+br)2         if true objects collide
-        bool colliciondetection(const SpaceObject& check);
+        bool detectCollision(const SpaceObject& check);
 
         //test functions to get values of objects
         double getMass() const;

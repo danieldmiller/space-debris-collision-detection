@@ -9,6 +9,8 @@ Space::Space(int amountOfDebris0, bool printObjects)
 {
 	amountOfDebris = amountOfDebris0;
     output = new SpaceWriter(printObjects);
+    std::string collisionOutputPath = "collisions.json";
+    collisionOutput = new SpaceWriter(collisionOutputPath);
 
 	//initialize the limits for the space
 	//for(int i = 0; i < 8 ; i++){
@@ -20,11 +22,13 @@ Space::Space(const Space& rf) {
 	amountOfDebris = rf.amountOfDebris;
 	debris = rf.debris;
     output = rf.output;
+    collisionOutput = rf.output;
 }
 
 Space::~Space()
 {
     delete output;
+    delete collisionOutput;
 }
 
 void Space::initializeObjects()
@@ -86,8 +90,15 @@ void Space::updateObjects()
     for (int i = 0; i < amountOfDebris; i++) {
         SpaceObject& obj_i = debris[i];
         for (int j = 0; j < amountOfDebris; j++) {
+            SpaceObject& obj_j = debris[j];
+
             if (i == j)
                 continue;
+            if (obj_i.detectCollision(obj_j)) {
+                collisionOutput->writeCollision(obj_i, obj_j, time, true);
+                // TODO: Remove collided objects
+                continue;
+            }
 
             obj_i.updateGravitationalForce(debris[j]);
         }

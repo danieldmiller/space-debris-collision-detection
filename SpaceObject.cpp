@@ -78,7 +78,7 @@ SpacePoint SpaceObject::returnPoint() const
     return location;
 }
 
-bool SpaceObject::colliciondetection(const SpaceObject& check)
+bool SpaceObject::detectCollision(const SpaceObject& check)
 {
     SpacePoint comp = check.returnPoint();
     //(ax-bx)2+(ay-by)2+(az-bz)2 < (ar+br)2

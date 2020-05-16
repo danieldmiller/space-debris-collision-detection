@@ -27,6 +27,7 @@ private:
 	std::vector <std::thread> threads;
 	SpacePoint limit[7];
 	SpaceWriter* output;
+    SpaceWriter* collisionOutput;
 	int amountOfDebris;
 	static double time;
 	const int nThreads = std::thread::hardware_concurrency();
