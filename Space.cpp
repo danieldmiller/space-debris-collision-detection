@@ -71,7 +71,7 @@ void Space::updateObjects()
 
                 // Remove collided objects
                 debris.erase(debris.begin() + i);
-                debris.erase(debris.begin() + j);
+                debris.erase(debris.begin() + j-1); // j-1 as list shrinks by 1 above
                 amountOfDebris -= 2;
                 continue;
             }
