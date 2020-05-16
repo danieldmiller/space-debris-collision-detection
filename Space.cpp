@@ -146,7 +146,7 @@ void Space::updateObjectsThreads()
 }
 
 
-void Space::initializeObjectsForThreads(int begin, int end)
+/*void Space::initializeObjectsForThreads(int begin, int end)
 {
     double lower_bound = 2;
     double upper_bound = 5;
@@ -164,18 +164,22 @@ void Space::initializeObjectsForThreads(int begin, int end)
     }
     //std::cout << std::thread::get_id() << std::endl;
    // m.unlock();
-}
+}*/
 
 void Space::updateForceForThreads(int begin, int end)
 {
-    double deltaTime = 100000;
+
     m.lock();
     for (int i = begin; i < end; i++) {
         SpaceObject& obj_i = debris[i];
         for (int j = begin; j < end; j++) {
+            SpaceObject& obj_j = debris[j];
             if (i == j)
                 continue;
-
+            if (obj_i.detectCollision(obj_j)) {
+                collisionOutput->writeCollision(obj_i, obj_j, time, true);
+                continue;
+            }
             obj_i.updateGravitationalForce(debris[j]);
         }
     }

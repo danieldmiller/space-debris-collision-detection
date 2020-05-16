@@ -34,7 +34,7 @@ private:
 	std::mutex m;
 	Clock singleP, multiP;
 
-	void initializeObjectsForThreads(int begin, int end);
+	//void initializeObjectsForThreads(int begin, int end);
 	void updateForceForThreads(int begin, int end);
 };
 
