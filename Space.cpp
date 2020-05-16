@@ -55,34 +55,6 @@ void Space::initializeObjects()
     output->writeObjects(debris, amountOfDebris, time);
 }
 
-void Space::initializeObjectsThreads()
-{
-
-    int threadBegin = 0;
-    int threadEnd = 0;
-    multiP.startClock();
-
-    for (int i = 0; i < nThreads; ++i) {
-        threadBegin = (i / nThreads) * amountOfDebris;
-        threadEnd = ((i + 1) / nThreads) * amountOfDebris;
-        threads.push_back(std::thread([threadBegin, threadEnd, this]() {
-            this->initializeObjectsForThreads(threadBegin, threadEnd);
-            }));
-    }
-
-    for (auto& thread : threads) {
-        thread.join();
-    }
-
-    threads.clear();
-
-    multiP.endClock();
-
-    //calculates the average that a single thread takes to run
-    std::cout << "parallel initialization time: " << multiP.returnParallelTime() << "ns" << std::endl;
-}
-
-
 void Space::updateObjects()
 {
     singleP.startClock();
@@ -148,27 +120,6 @@ void Space::updateObjectsThreads()
 
     time = time + deltaTime;
 }
-
-
-/*void Space::initializeObjectsForThreads(int begin, int end)
-{
-    double lower_bound = 2;
-    double upper_bound = 5;
-    std::uniform_real_distribution<double> uniform(lower_bound, upper_bound);
-    std::uniform_real_distribution<double> uniformPosition(-1, 1);
-    std::default_random_engine re;
-    //m.lock();
-    for (int i = begin; i < end; i++) {
-        double mass = uniform(re) * 100000;
-        double radius = uniform(re);
-        double x = uniformPosition(re) * 10 * amountOfDebris;
-        double y = uniformPosition(re) * 10 * amountOfDebris;
-        double z = uniformPosition(re) * 10 * amountOfDebris;
-        debris.emplace_back(mass, radius, x, y, z);
-    }
-    //std::cout << std::thread::get_id() << std::endl;
-   // m.unlock();
-}*/
 
 void Space::updateForceForThreads(int begin, int end)
 {
