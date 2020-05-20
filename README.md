@@ -13,6 +13,7 @@ To get started running the program, please follow these steps:
 
 To show the help, run `./space-debris-collision-detection --help`. There are several flags that will allow you to customize the simulation and the way it's run.
 
+- `-t` or `--thread-count`: The number of threads to utilize (1=serial execution of program)
 - `-p` or `--print-objects`: Prints json with information on the `SpaceObjects` at each cycle.
 - `-o` or `--objects <n>`: The number of `SpaceObjects` to simulate.
 - `-c` or `--cycles <n>`: The number of cycles to simulate (one iteration of the for loop in the `Space::update` method is a cycle).
