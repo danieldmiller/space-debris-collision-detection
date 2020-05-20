@@ -8,11 +8,12 @@
 #include <thread>
 #include <mutex>
 #include <vector>
+#include <set>
 
 
 class Space {
 public:
-	Space(int amountOfDebris0 = 0, bool printObjects = false);
+	Space(int _amountOfDebris = 0, bool printObjects = false, int _threadCount = 1);
 	Space(const Space& rf);
 	~Space();
 	void initializeObjects();
@@ -30,11 +31,12 @@ private:
     SpaceWriter* collisionOutput;
 	int amountOfDebris;
 	static double time;
-	const int nThreads = std::thread::hardware_concurrency();
+    int threadCount;
 	std::mutex m;
 	Clock singleP, multiP;
 
-	void updateForceForThreads(int begin, int end);
+    void updateForceForThreads(int begin, int end, std::set<int> collisionIndexes);
+    void task(int number); 
 };
 
 #endif /* !SPACE_H*/

@@ -17,12 +17,14 @@
 using namespace std;
 
 bool printObjects = false;
+int threadCount = 1;
 int objectsToSpawn = 20;
 int cyclesToCompute = 5000;
 bool interactive = false;
 
 void printHelp(int exitCode) {
     cout <<
+        "-t --thread-count <n>  Number of threads to utilize (1=serial execution)" << endl <<
         "-p --print-objects:    Print the objects information at each cycle" << endl <<
         "-o --objects <n>:      Number of objects to spawn" << endl <<
         "-c --cycles <n>:       Number of cycles to compute" << endl <<
@@ -31,9 +33,16 @@ void printHelp(int exitCode) {
     exit(exitCode);
 }
 
+int processThreadCount(int threadCount) {
+    if (threadCount < 1) return 1;
+    if (threadCount > std::thread::hardware_concurrency()) return std::thread::hardware_concurrency();
+    return threadCount;
+}
+
 void processArgs(int argc, char** argv) {
-    const char* const short_opts = "po:c:ih";
+    const char* const short_opts = "t:po:c:ih";
     const option long_opts[] = {
+            {"thread-count", required_argument, nullptr, 't'},
             {"print-objects", no_argument, nullptr, 'p'},
             {"objects", required_argument, nullptr, 'o'},
             {"cycles", required_argument, nullptr, 'c'},
@@ -49,14 +58,30 @@ void processArgs(int argc, char** argv) {
             break;
 
         switch (opt) {
+            case 't':
+                try {
+                    threadCount = stoi(optarg);
+                    threadCount = processThreadCount(threadCount);
+                } catch(std::invalid_argument& e){
+                    std::cout << e.what() << std::endl;
+                }
+                break;
 	        case 'p':
 	            printObjects = true;
 	            break;
 	        case 'o':
-	            objectsToSpawn = stoi(optarg);
+	            try {
+                    objectsToSpawn = stoi(optarg);
+                }  catch(std::invalid_argument& e){
+                    std::cout << e.what() << std::endl;
+                }
 	            break;
 	        case 'c':
-	            cyclesToCompute = stoi(optarg);
+                try {
+                    cyclesToCompute = stoi(optarg);
+                } catch(std::invalid_argument& e){
+                    std::cout << e.what() << std::endl;
+                }
 	            break;
 	        case 'i':
 	            interactive = true;
@@ -73,19 +98,27 @@ void processArgs(int argc, char** argv) {
 
 int main (int argc, char *argv[]) {
 	processArgs(argc, argv);
+    auto start = std::chrono::system_clock::now();
 	cout << objectsToSpawn << " objects during " << cyclesToCompute << " cycles." << endl;
 
-    Space space(objectsToSpawn, printObjects);
+    Space space(objectsToSpawn, printObjects, threadCount);
     space.initializeObjects();
-
 	for (int i = 0; i < cyclesToCompute; i++) {
 		if (interactive) {
 			string userInput;
 			cin >> userInput;
 		}
-		space.updateObjects();
-	}
 
+        if (threadCount == 1) {
+            space.updateObjects(); 
+        } else {
+            space.updateObjectsThreads();
+        }
+	}
     cout << "Done updating objects" << endl;
+
+    auto end = std::chrono::system_clock::now();
+    double elapsedSeconds = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
+    cout << "Program run time: " << elapsedSeconds << " seconds" << std::endl;
     return EXIT_SUCCESS;
 };
