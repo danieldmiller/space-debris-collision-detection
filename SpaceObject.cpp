@@ -32,22 +32,6 @@ SpaceObject::SpaceObject(const SpaceObject& rf) :  mass(rf.mass), r(rf.r), g(rf.
 SpaceObject::~SpaceObject() {
 }
 
-const SpaceObject& SpaceObject::operator=(const SpaceObject& sp)
-{
-    if (this != &sp) {
-        gY = 0.0;
-        gX = 0.0;
-        gR = 0.0;
-        velocity = 0.0;
-        gY = sp.gY;
-        gX = sp.gX;
-        gR = sp.gR;
-        velocity = sp.velocity;
-        location = sp.location;
-    }
-    return *this;
-}
-
 void SpaceObject::updateGravitationalForce(const SpaceObject& object)
 {
     SpacePoint distVector;

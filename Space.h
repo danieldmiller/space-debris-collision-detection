@@ -35,8 +35,8 @@ private:
 	std::mutex m;
 	Clock singleP, multiP;
 
-    void updateForceForThreads(int begin, int end, std::set<int> collisionIndexes);
-    void task(int number); 
+    void updateForceForThreads(int begin, int end, std::set<int> &collisionIndexes);
+    void task(int number);
 };
 
 #endif /* !SPACE_H*/

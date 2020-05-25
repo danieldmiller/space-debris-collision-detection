@@ -106,9 +106,9 @@ void Space::updateObjectsThreads()
     std::set<int> collisionIndexes;
 
     for (int i = 0; i < 4; ++i) {
-        int threadBegin = (float(i) / float(4)) * amountOfDebris;
-        int threadEnd = (float(i+1)/float(4)) * amountOfDebris - 1;
-        std::thread thread = std::thread(&Space::updateForceForThreads, this, threadBegin, threadEnd, collisionIndexes);    
+        int threadBegin = (float(i) / float(4)) * debris.size();
+        int threadEnd = (float(i+1)/float(4)) * debris.size() - 1;
+        std::thread thread = std::thread(&Space::updateForceForThreads, this, threadBegin, threadEnd, std::ref(collisionIndexes));
         threads.push_back(std::move(thread));
     }
 
@@ -121,13 +121,11 @@ void Space::updateObjectsThreads()
     threads.clear();
 
     // Remove collided objects from debris vector after threads have joined
-    for (auto it = collisionIndexes.begin(); it != collisionIndexes.end(); ++it) {
-        std::cout << *it << std::endl;
+    for (auto it = collisionIndexes.rbegin(); it != collisionIndexes.rend(); it++) {
         debris.erase(debris.begin() + *it);
-        amountOfDebris--;
     }
 
-    for (int i = 0; i < amountOfDebris; i++) {
+    for (int i = 0; i < debris.size(); i++) {
         SpaceObject& obj = debris[i];
         obj.updateVelocity(deltaTime);
         obj.updateLocation();
@@ -139,16 +137,15 @@ void Space::updateObjectsThreads()
     std::cout << "parallel update time: " << multiP.returnParallelTime() << "ns" << std::endl;
 
     time = time + deltaTime;
-    output->writeObjects(debris, amountOfDebris, time);
+    output->writeObjects(debris, debris.size(), time);
 }
 
-void Space::updateForceForThreads(int begin, int end, std::set<int> collisionIndexes)
+void Space::updateForceForThreads(int begin, int end, std::set<int> &collisionIndexes)
 {
     for (int i = begin; i <= end; i++) {
         SpaceObject& obj_i = debris[i];
-        for (int j = 0; j < amountOfDebris; j++) {
+        for (int j = 0; j < debris.size(); j++) {
             SpaceObject& obj_j = debris[j];
-            int a = i+j;
             if (i == j)
                 continue;
             if (obj_i.detectCollision(obj_j)) {
