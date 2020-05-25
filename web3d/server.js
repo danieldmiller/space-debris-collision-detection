@@ -10,8 +10,32 @@ if (!program || program.length == 0) {
   process.exit(1);
 }
 
-class Wrapper {
+class BaseWrapper {
+  read() {
+    if (this.fifo.length == 0)
+      return false;
+
+    const cycles = [];
+
+    for (let i = 0; i < 60 * 2; i++)
+      cycles.push(this.fifo.shift());
+
+    return cycles.filter(Boolean);
+  }
+
+  pull() {}
+}
+
+class JsonWrapper extends BaseWrapper {
   constructor() {
+    super();
+    this.fifo = [ ...require('./' + program) ];
+  }
+}
+
+class Wrapper extends BaseWrapper {
+  constructor() {
+    super();
     this.cycle = 0;
     this.done = false;
     this.fifo = [];
@@ -55,18 +79,6 @@ class Wrapper {
     if (this.fifo.length < 60 * 5)
       this.pull();
   }
-
-  read(cyclesNb) {
-    if (this.fifo.length == 0)
-      return false;
-
-    const cycles = [];
-
-    for (let i = 0; i < 60 * 2; i++)
-      cycles.push(this.fifo.shift());
-
-    return cycles.filter(Boolean);
-  }
 }
 
 let simulation;
@@ -83,7 +95,9 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-  simulation = new Wrapper();
+  simulation = program.split('.').pop() == 'json'
+    ? new JsonWrapper()
+    : new Wrapper();
   res.send();
 });
 

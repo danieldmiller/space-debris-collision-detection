@@ -13,11 +13,13 @@
 
 #include <getopt.h>
 #include <iostream>
+#include <random>
 
 using namespace std;
 
 bool printObjects = false;
 int threadCount = 1;
+int seed = random_device()();
 int objectsToSpawn = 20;
 int cyclesToCompute = 5000;
 bool interactive = false;
@@ -25,6 +27,7 @@ bool interactive = false;
 void printHelp(int exitCode) {
     cout <<
         "-t --thread-count <n>  Number of threads to utilize (1=serial execution)" << endl <<
+        "-s --seed <seed>       A seed to initialize the random number generator" << endl <<
         "-p --print-objects:    Print the objects information at each cycle" << endl <<
         "-o --objects <n>:      Number of objects to spawn" << endl <<
         "-c --cycles <n>:       Number of cycles to compute" << endl <<
@@ -40,9 +43,10 @@ int processThreadCount(int threadCount) {
 }
 
 void processArgs(int argc, char** argv) {
-    const char* const short_opts = "t:po:c:ih";
+    const char* const short_opts = "t:s:po:c:ih";
     const option long_opts[] = {
             {"thread-count", required_argument, nullptr, 't'},
+            {"seed", required_argument, nullptr, 's'},
             {"print-objects", no_argument, nullptr, 'p'},
             {"objects", required_argument, nullptr, 'o'},
             {"cycles", required_argument, nullptr, 'c'},
@@ -66,6 +70,13 @@ void processArgs(int argc, char** argv) {
                     std::cout << e.what() << std::endl;
                 }
                 break;
+            case 's':
+                try {
+                    seed = stoi(optarg);
+                } catch(std::invalid_argument& e){
+                    std::cout << e.what() << std::endl;
+                }
+                break;
 	        case 'p':
 	            printObjects = true;
 	            break;
@@ -84,8 +95,8 @@ void processArgs(int argc, char** argv) {
                 }
 	            break;
 	        case 'i':
-	            interactive = true;
-	            break;
+                interactive = true;
+                break;
 	        case 'h':
 	            printHelp(0);
 	            break;
@@ -101,7 +112,7 @@ int main (int argc, char *argv[]) {
     auto start = std::chrono::system_clock::now();
 	cout << objectsToSpawn << " objects during " << cyclesToCompute << " cycles." << endl;
 
-    Space space(objectsToSpawn, printObjects, threadCount);
+    Space space(objectsToSpawn, printObjects, threadCount, seed);
     space.initializeObjects();
 	for (int i = 0; i < cyclesToCompute; i++) {
 		if (interactive) {
@@ -110,7 +121,7 @@ int main (int argc, char *argv[]) {
 		}
 
         if (threadCount == 1) {
-            space.updateObjects(); 
+            space.updateObjects();
         } else {
             space.updateObjectsThreads();
         }
@@ -120,5 +131,6 @@ int main (int argc, char *argv[]) {
     auto end = std::chrono::system_clock::now();
     double elapsedSeconds = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
     cout << "Program run time: " << elapsedSeconds << " seconds" << std::endl;
+    cout << "Seed: " << seed << endl;
     return EXIT_SUCCESS;
 };

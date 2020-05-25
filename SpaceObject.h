@@ -14,8 +14,6 @@ class SpaceObject{
         SpaceObject(const SpaceObject& rf); // copy constructor
         ~SpaceObject(); // destructor
 
-        const SpaceObject& operator=(const SpaceObject& sp); //overloading operator for redefining objects
-
         //calculates the gravitational force of the object and saves the current value
         void updateGravitationalForce(const SpaceObject& object);
         void updateVelocity(double deltaTime);

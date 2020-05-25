@@ -13,7 +13,7 @@
 
 class Space {
 public:
-	Space(int _amountOfDebris = 0, bool printObjects = false, int _threadCount = 1);
+	Space(int _amountOfDebris = 0, bool printObjects = false, int _threadCount = 1, int seed = 0);
 	Space(const Space& rf);
 	~Space();
 	void initializeObjects();
@@ -32,11 +32,12 @@ private:
 	int amountOfDebris;
 	static double time;
     int threadCount;
+    int seed;
 	std::mutex m;
 	Clock singleP, multiP;
 
-    void updateForceForThreads(int begin, int end, std::set<int> collisionIndexes);
-    void task(int number); 
+    void updateForceForThreads(int begin, int end, std::set<int> &collisionIndexes);
+    void task(int number);
 };
 
 #endif /* !SPACE_H*/
