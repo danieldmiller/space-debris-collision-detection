@@ -8,6 +8,7 @@ const spaceHistory = (() => {
 	const cycles = [];
 	let dataDone, step;
 	let updating = false;
+	let onInitCallback = () => {};
 
 	const cycle = () => cycles[0];
 	const objects = () => cycle().objects;
@@ -47,11 +48,14 @@ const spaceHistory = (() => {
 	};
 	const init = async () => {
 		delete self.init;
+		cycles.shift();
 		const response = await fetch('http://localhost:3000', { method: 'POST' });
 		dataDone = false;
 		step = 0;
 		await pull();
+		onInitCallback();
 	};
+	const onInit = callback => onInitCallback = callback;
 
 	const self = {
 		step: () => step,
@@ -61,6 +65,7 @@ const spaceHistory = (() => {
 		object,
 		next,
 		init,
+		onInit,
 	};
 
 	return self;
@@ -119,37 +124,49 @@ const animate = () => {
 	camera.lookAt(0, 0, 0);
 };
 
-const objects = [];
-const addObject = (data, id) => {
+let objects = [];
+const addObject = (data, i) => {
 	const { r } = data;
-	const geometry = new THREE.SphereGeometry(r, 32, 32);
+	const geometry = new THREE.SphereGeometry(1, 32, 32);
 	const material = new THREE.MeshLambertMaterial();
-	const mesh = new THREE.Mesh(geometry, material);
-	const object = { mesh, id };
+	const object = new THREE.Mesh(geometry, material);
 
-	scene.add(mesh);
+	scene.add(object);
 	objects.push(object);
-	updateObject(object, 0);
+	updateObject(object, i);
 };
 
-const updateObject = (object) => {
-	const data = spaceHistory.object(object.id);
-	const { x = 0, y = 0, z = 0 } = data;
+const updateObject = (object, i) => {
+	const data = spaceHistory.object(i);
+	if (!data) {
+		scene.remove(object);
+		return false;
+	}
+	const { x = 0, y = 0, z = 0, r = 1 } = data;
 
-	object.mesh.position.set(x, y, z);
+	object.scale.setScalar(r);
+	object.position.set(x, y, z);
+
+	return true;
 };
 
-init().then(() => {
-	spaceHistory.objects().forEach((data, i) => addObject(data, i));
+let updateInterval;
+spaceHistory.onInit(() => {
+	clearInterval(updateInterval);
+	objects.forEach(object => scene.remove(object));
+	objects = [];
+	spaceHistory.objects().forEach(addObject);
 
 	const timeInfo = document.getElementById("time");
-	const interval = setInterval(() => {
+	updateInterval = setInterval(() => {
 		if (!spaceHistory.next())
 			return;
 
 		timeInfo.innerText = spaceHistory.step();
-		objects.forEach(object => updateObject(object));
+		objects = objects.filter(updateObject);
 	}, 1000 / 30);
 
 	animate();
 });
+
+init();
