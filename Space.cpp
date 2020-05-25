@@ -16,7 +16,7 @@ void Space::task(int number) {
 
 Space::Space(int _amountOfDebris, bool printObjects, int _threadCount) {
 	amountOfDebris = _amountOfDebris;
-    _threadCount = threadCount;
+    threadCount = _threadCount;
 
     output = new SpaceWriter(printObjects);
     std::string collisionOutputPath = "collisions.json";
@@ -105,9 +105,9 @@ void Space::updateObjectsThreads()
     multiP.startClock();
     std::set<int> collisionIndexes;
 
-    for (int i = 0; i < 4; ++i) {
-        int threadBegin = (float(i) / float(4)) * amountOfDebris;
-        int threadEnd = (float(i+1)/float(4)) * amountOfDebris - 1;
+    for (int i = 0; i < threadCount; ++i) {
+        int threadBegin = (float(i) / float(threadCount)) * amountOfDebris;
+        int threadEnd = (float(i+1)/float(threadCount)) * amountOfDebris - 1;
         std::thread thread = std::thread(&Space::updateForceForThreads, this, threadBegin, threadEnd, collisionIndexes);    
         threads.push_back(std::move(thread));
     }
