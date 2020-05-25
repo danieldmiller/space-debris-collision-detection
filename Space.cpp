@@ -14,9 +14,10 @@ void Space::task(int number) {
     }
 }
 
-Space::Space(int _amountOfDebris, bool printObjects, int _threadCount) {
+Space::Space(int _amountOfDebris, bool printObjects, int _threadCount, int seed) {
 	amountOfDebris = _amountOfDebris;
-    _threadCount = threadCount;
+    threadCount = _threadCount;
+    this->seed = seed;
 
     output = new SpaceWriter(printObjects);
     std::string collisionOutputPath = "collisions.json";
@@ -41,9 +42,8 @@ void Space::initializeObjects()
 {
     std::uniform_real_distribution<double> uniformMass(3, 5);
     std::uniform_real_distribution<double> uniformRadius(2, 5);
-    std::uniform_real_distribution<double> uniformPosition(-500, 500);
-    std::random_device rd;
-    std::default_random_engine re(rd());
+    std::uniform_real_distribution<double> uniformPosition(-30, 30);
+    std::default_random_engine re(seed);
 
     singleP.startClock();
 
@@ -105,9 +105,9 @@ void Space::updateObjectsThreads()
     multiP.startClock();
     std::set<int> collisionIndexes;
 
-    for (int i = 0; i < 4; ++i) {
-        int threadBegin = (float(i) / float(4)) * debris.size();
-        int threadEnd = (float(i+1)/float(4)) * debris.size() - 1;
+    for (int i = 0; i < threadCount; ++i) {
+        int threadBegin = (float(i) / float(threadCount)) * debris.size();
+        int threadEnd = (float(i+1)/float(threadCount)) * debris.size() - 1;
         std::thread thread = std::thread(&Space::updateForceForThreads, this, threadBegin, threadEnd, std::ref(collisionIndexes));
         threads.push_back(std::move(thread));
     }
