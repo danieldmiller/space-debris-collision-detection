@@ -42,7 +42,7 @@ void Space::initializeObjects()
 {
     std::uniform_real_distribution<double> uniformMass(3, 5);
     std::uniform_real_distribution<double> uniformRadius(2, 5);
-    std::uniform_real_distribution<double> uniformPosition(-30, 30);
+    std::uniform_real_distribution<double> uniformPosition(-500, 500);
     std::default_random_engine re(seed);
 
     singleP.startClock();
